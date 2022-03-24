@@ -3,14 +3,25 @@ import './App.css';
 import { io } from "socket.io-client";
 import { useEffect, useState } from 'react';
 
+
+//connect with backend
 const socket = io.connect("http://localhost:5005")
-console.log(socket);
+//console.log(socket);
 
 
 function App() {
   const [message, setMessage] = useState(" ");
   const [receiveMessage, setReceiveMessage] = useState(" ")
-  console.log(receiveMessage);
+  const [room, setRoom] = useState("");
+
+  // console.log(receiveMessage);
+
+  const joinRoom = () => {
+    if (room !== "") {
+      socket.emit("join_room", room);
+    }
+  };
+
 
   const sendMessage = () => {
     socket.emit("send_message", { message })
@@ -26,7 +37,13 @@ function App() {
 
   return (
     <div className="App">
-      <h1>client is ruuning</h1>
+      <h1>Chat with friends</h1>
+      <input
+        placeholder="Room Number..."
+        onChange={(event) => {
+          setRoom(event.target.value);
+        }} />
+      <button onClick={joinRoom}> Join Room</button>
       <input type="text" onChange={(e) => setMessage(e.target.value)} />
       <button onClick={sendMessage}>send</button>
       <div>

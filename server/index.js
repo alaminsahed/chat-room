@@ -30,9 +30,13 @@ const io = new Server(server, {
 io.on("connection", (socket) => {
     console.log(`id:${socket.id}`);
     //console.log(socket); // gives an error. 
+    socket.on("join_room", (data) => {
+        socket.join(data);
+    });
+
     socket.on("send_message", (data) => {
         console.log("b", data);
-        socket.broadcast.emit("receive_message", data)
+        socket.to(data.room).emit("receive_message", data)
     })
 });
 
