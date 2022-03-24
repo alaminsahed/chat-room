@@ -13,6 +13,8 @@ dotenv.config()
 app.use(cors());
 app.use(express.json())
 
+//server create 
+//socket demands http server create
 const server = http.createServer(app);
 
 const io = new Server(server, {
@@ -22,12 +24,15 @@ const io = new Server(server, {
     }
 })
 
+//event name must be same in client and server.
+// data flow: client->server->another client
+
 io.on("connection", (socket) => {
     console.log(`id:${socket.id}`);
     //console.log(socket); // gives an error. 
     socket.on("send_message", (data) => {
         console.log("b", data);
-        socket.broadcast.emit(data)
+        socket.broadcast.emit("receive_message", data)
     })
 });
 
