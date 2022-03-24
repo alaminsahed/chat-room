@@ -24,7 +24,7 @@ function App() {
 
 
   const sendMessage = () => {
-    socket.emit("send_message", { message })
+    socket.emit("send_message", { message, room })
   }
 
   useEffect(() => {

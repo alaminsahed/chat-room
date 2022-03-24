@@ -27,19 +27,30 @@ const io = new Server(server, {
 //event name must be same in client and server.
 // data flow: client->server->another client
 
+// io.on("connection", (socket) => {
+//     console.log(`id:${socket.id}`);
+//     //console.log(socket); // gives an error. 
+//     socket.on("join_room", (data) => {
+//         socket.join(data);
+//     });
+
+//     socket.on("send_message", (data) => {
+//         //console.log("b", data);
+//         socket.to(data.room).emit("receive_message", data)
+//     })
+// });
+
 io.on("connection", (socket) => {
-    console.log(`id:${socket.id}`);
-    //console.log(socket); // gives an error. 
+    console.log(`User Connected: ${socket.id}`);
+
     socket.on("join_room", (data) => {
         socket.join(data);
     });
 
     socket.on("send_message", (data) => {
-        console.log("b", data);
-        socket.to(data.room).emit("receive_message", data)
-    })
+        socket.to(data.room).emit("receive_message", data);
+    });
 });
-
 
 
 
